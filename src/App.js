@@ -1,25 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './components/Login';
+import AdminDashboard from './pages/AdminDashboard';
+import ContadorDashboard from './pages/ContadorDashboard';
+import GerenteDashboard from './pages/GerenteDashboard';
+import ProtectedRoute from './components/ProtectedRoute';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        {/* Ruta de Login */}
+        <Route path="/" element={<Login />} />
+
+        {/* Rutas protegidas por roles */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute role="Administrador">
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/contador"
+          element={
+            <ProtectedRoute role="Contador">
+              <ContadorDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/gerente"
+          element={
+            <ProtectedRoute role="Gerente">
+              <GerenteDashboard />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
